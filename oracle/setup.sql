@@ -22,6 +22,7 @@ EXCEPTION
 END;
 /
 @@../db/001_shipments.sql
+-- Kézi SQL*Plus/SQLcl futtatásnál a db/migrations/*.sql fájlokat itt hívd meg (a run_all.sh és tools/run_oracle.py automatikusan betölti őket).
 @@../db/shipment_api.pks
 @@../db/shipment_api.pkb
 SHOW ERRORS PACKAGE Shipment_Api

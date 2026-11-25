@@ -11,8 +11,6 @@ CREATE OR REPLACE PACKAGE BODY Shipment_Api AS
       VALUES (request_key_, destination_)
       RETURNING shipment_id INTO shipment_id_;
       -- COURSE INSERT END
-      -- Helyi SQLite-próbához a DUP_VAL_ON_INDEX ág visszakereső SELECT utasítását
-      -- csomagold -- COURSE REPLAY BEGIN és -- COURSE REPLAY END jelölők közé.
    END Submit;
 END Shipment_Api;
 /

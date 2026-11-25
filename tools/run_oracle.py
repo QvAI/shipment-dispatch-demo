@@ -56,6 +56,7 @@ def main():
         dsn = os.environ.get("ORACLE_DSN", "app_user/app_pass@//host.docker.internal:1521/FREEPDB1")
         completed = subprocess.run([
             "docker", "run", "--rm",
+            "--add-host=host.docker.internal:host-gateway",
             "-e", f"ORACLE_DSN={dsn}",
             "-v", f"{ROOT}:/workspace",
             "-w", "/workspace/oracle",

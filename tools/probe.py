@@ -12,7 +12,11 @@ class PayloadConflict(Exception):
 
 
 def marked_sql(source, name, *, required=True):
-    match = re.search(rf"-- COURSE {name} BEGIN\s*(.*?)\s*-- COURSE {name} END", source, re.S)
+    match = re.search(
+        rf"(?m)^\s*-- COURSE {name} BEGIN\s*$\s*(.*?)\s*^\s*-- COURSE {name} END\s*$",
+        source,
+        re.S,
+    )
     if not match:
         if required:
             raise ValueError(f"Missing {name} SQL markers in the package")
