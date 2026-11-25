@@ -17,7 +17,7 @@ Read these files in order before forming any conclusion:
 4. All relevant source files across layers: `java/`, `db/`, `oracle/`, `tools/`
 
 ### Step 2 · Mandatory Stop-and-Ask Gate (Open Questions)
-Inspect `## Open questions` in `intent.md`.
+Inspect `## Open questions` / `## Nyitott kérdések` in `intent.md`.
 - If **any** open question is still unanswered (for example: what should happen when an existing `request_key` is retried with a **different** `destination` / payload):
   - **STOP before finalizing `spec.md`.**
   - Report in 3–5 concise bullets what you found in the codebase (exact file paths + line numbers for the call chain from Java client → JDBC adapter → PL/SQL package).

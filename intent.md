@@ -1,21 +1,21 @@
-# Intent: SHIP-101 · Idempotent shipment dispatch on retry
-Author: Product Manager (Warehouse Operations). Status: ready for engineering spec.
-Source: [SHIP-101](docs/ticket.md)
+# Intent: SHIP-101 · Idempotens küldeményfeladás újrapróbálkozáskor
+Szerző: Product Manager (Raktári üzemeltetés). Státusz: fejlesztői specifikációra kész.
+Forrás: [SHIP-101](docs/ticket.md)
 
-## Problem
-When the warehouse client submits a shipment (e.g. to Debrecen with request key `REQ-101`) and the network response is lost after the database insert succeeds, the client retries the exact same request. Today, the system creates a second duplicate shipment instead of recognizing the retry.
+## Probléma
+Amikor a raktári kliens küldeményfeladást indít (pl. Debrecenbe a `REQ-101` kérésazonosítóval), és az adatbázis-beszúrás sikeres, de a hálózati válasz elvész, a kliens pontosan ugyanazt a kérést küldi újra. Ma a rendszer nem ismeri fel az ismétlést, és létrehoz egy második, duplikált küldeményt.
 
-## Proposed outcome
-- Retrying a request with the same request key and same shipment data returns the original shipment ID, with only a single shipment stored.
-- A new request key creates a new, independent shipment — even if the destination is the same.
+## Elvárt eredmény
+- Azonos kérésazonosítóval és azonos adatokkal megismételt kérésnél a rendszer az eredeti küldeményazonosítót adja vissza, és egyetlen sor marad tárolva.
+- Új kérésazonosítóval minden esetben új, önálló küldemény jön létre — akkor is, ha a célállomás ugyanaz.
 
-## Affected users and systems
-Warehouse operators, Java dispatch client (`ShipmentClient`), JDBC gateway, and the shared Oracle PL/SQL dispatch package (`Shipment_Api.Submit`, also called by direct PL/SQL consumers).
+## Érintett felhasználók és rendszerek
+Raktári operátorok, a Java feladási kliens (`ShipmentClient`), a JDBC-adapter, valamint a közös Oracle PL/SQL feladási csomag (`Shipment_Api.Submit`, amelyet közvetlen PL/SQL-hívók is használnak).
 
-## Constraints
-- The fix must protect **all** callers of the shared dispatch path (both Java and direct PL/SQL callers).
-- Existing public call signatures must remain backwards-compatible.
-- Transaction boundaries owned by the caller must not be broken (no hidden commits inside the package).
+## Megkötések
+- A javításnak a közös feladási út **minden** hívóját védenie kell (a Java-klienst és a közvetlen PL/SQL-hívókat is).
+- A meglévő publikus hívási szignatúráknak visszamenőlegesen kompatibilisnek kell maradniuk.
+- A hívó által kezelt tranzakcióhatárok nem sérülhetnek (nem kerülhet rejtett `COMMIT` a package-be).
 
-## Open questions
-- What should happen if a caller reuses an existing request key with a **different** destination (or mismatched payload)? Should it be rejected with an error, or overwrite the original shipment? *(Needs Product Owner decision before implementation.)*
+## Nyitott kérdések
+- Mi történjen akkor, ha egy hívó ugyanazt a kérésazonosítót **eltérő** célállomással (vagy eltérő adatokkal) küldi be újra? Hibával utasítsuk el az eredeti sor megőrzése mellett, vagy írjuk felül az eredeti küldeményt? *(Implementáció előtt Product Owner döntés szükséges.)*
