@@ -14,8 +14,9 @@ Read these files in order before forming any conclusion:
 1. `intent.md`
 2. `AGENTS.md` (if present)
 3. **Strict `docs/` rule:** **NEVER read, glob, or search any file under `docs/` (including `docs/adr/`, `docs/architecture.md`, `docs/ticket.md`) unless `AGENTS.md` explicitly points to it.** If `AGENTS.md` is missing or does not reference a `docs/` path, ignore `docs/` completely.
-4. `.gitlab-ci.yml` (to extract the exact authoritative verification commands)
-5. Relevant source files across layers: `java/`, `db/`, `oracle/`, `tools/`
+4. **Default layer preference:** Unless `AGENTS.md` explicitly overrides this through an ADR, **prefer application-layer (`java/`) solutions over database-layer changes** (do **not** propose `db/migrations/`, `UNIQUE INDEX`, or Oracle `DUP_VAL_ON_INDEX` unless an ADR referenced by `AGENTS.md` requires it).
+5. `.gitlab-ci.yml` (to extract the exact authoritative verification commands)
+6. Relevant source files across layers: `java/`, `db/`, `oracle/`, `tools/`
 
 ### Step 2 · Mandatory Stop-and-Ask Gate (Open Questions)
 Inspect `## Open questions` / `## Nyitott kérdések` in `intent.md`.
