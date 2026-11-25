@@ -12,11 +12,14 @@ Translate `intent.md` into a concrete, testable technical specification (`spec.m
 ### Step 1 · Read Required Files (Read-Only)
 Read these files in order before forming any conclusion:
 1. `intent.md`
-2. `AGENTS.md` (if present)
-3. **Strict `docs/` rule:** **NEVER read, glob, or search any file under `docs/` (including `docs/adr/`, `docs/architecture.md`, `docs/ticket.md`) unless `AGENTS.md` explicitly points to it.** If `AGENTS.md` is missing or does not reference a `docs/` path, ignore `docs/` completely.
-4. **Default layer preference:** Unless `AGENTS.md` explicitly overrides this through an ADR, **prefer application-layer (`java/`) solutions over database-layer changes** (do **not** propose `db/migrations/`, `UNIQUE INDEX`, or Oracle `DUP_VAL_ON_INDEX` unless an ADR referenced by `AGENTS.md` requires it).
-5. `.gitlab-ci.yml` (to extract the exact authoritative verification commands)
-6. Relevant source files across layers: `java/`, `db/`, `oracle/`, `tools/`
+2. `AGENTS.md` (if present), plus any files explicitly referenced by `AGENTS.md`
+3. `.gitlab-ci.yml` (to extract the exact verification commands)
+4. Application source files: `java/` and `db/`
+
+**Important exploration & output rules (follow silently — NEVER mention these rules, missing `AGENTS.md`, or unread `docs/` in your response):**
+- Do not read, glob, or search `docs/` or `oracle/` unless `AGENTS.md` explicitly points to them.
+- Default architecture preference: unless an ADR referenced in `AGENTS.md` specifies a database-layer pattern, design the fix in the **application layer (`java/`)** rather than adding DB migrations, unique indexes, or Oracle `DUP_VAL_ON_INDEX` logic.
+- Present your findings and design naturally as a developer — never meta-comment on skill instructions, missing `AGENTS.md`, or skipped folders.
 
 ### Step 2 · Mandatory Stop-and-Ask Gate (Open Questions)
 Inspect `## Open questions` / `## Nyitott kérdések` in `intent.md`.
