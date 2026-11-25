@@ -1,0 +1,35 @@
+services:
+  lab:
+    build: .
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    environment:
+      ORACLE_DSN: app_user/app_pass@//oracle-db:1521/FREEPDB1
+    command: ["sh", "-c", "python tools/check_java.py && python -m unittest discover -s tests && python tools/probe.py"]
+
+  oracle-db:
+    image: gvenzl/oracle-free:23-slim
+    profiles: ["oracle"]
+    environment:
+      ORACLE_PASSWORD: TrainingPassword123
+      APP_USER: app_user
+      APP_USER_PASSWORD: app_pass
+    ports:
+      - "127.0.0.1:1521:1521"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  oracle-verify:
+    image: gvenzl/oracle-free:23-slim
+    profiles: ["oracle"]
+    depends_on:
+      oracle-db:
+        condition: service_healthy
+    working_dir: /workspace/oracle
+    volumes:
+      - .:/workspace
+    entrypoint: ["bash", "/workspace/oracle/run_all.sh"]

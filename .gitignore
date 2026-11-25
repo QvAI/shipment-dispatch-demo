@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.class
+evidence/
+.claude/settings.local.json
+.claude/.stop_retry_count*

@@ -1,0 +1,21 @@
+# Shipment Dispatch
+
+A Java-kliens küldeményt ad fel. A szintetikus adatbázisban egy sor egy feladást jelent. A [hibajegy](docs/ticket.md) egy sikeres adatbázis-művelet után elveszett válasszal kezdődik. A kliens újraküldi ugyanazt a kérést, és egy második küldemény jelenik meg.
+
+Helyi ellenőrzések Python 3.11+ és JDK 17+ mellett.
+
+~~~text
+python tools/check_java.py
+python tools/probe.py --single
+python tools/probe.py
+python -m unittest discover -s tests
+~~~
+
+A Java-próba helyettesített gatewayjel vizsgálja a kliens újrapróbálkozását. Az SQL-próba a package megjelölt utasításait és a repó sémafájljait SQLite-on használja. A kezdő állapotban az egyszeri feladás átmegy, a teljes próba az ismétlésnél és a kulcsütközésnél elbukik.
+
+Az Oracle-ellenőrzéshez használhatod az önálló Docker Compose környezetet (`gvenzl/oracle-free:23-slim`), vagy a `python tools/run_oracle.py` szkriptet (SQLcl / SQL*Plus kézi használatakor az `oracle/` munkakönyvtárban futtasd a `@setup.sql` és `@verify.sql` fájlokat). A javítás indexmigrációját a package frissítése előtt kell alkalmazni. A repó `.gitlab/merge_request_templates/Default.md` fájlja tartalmazza az ellenőrzött MR-sablont.
+
+~~~text
+docker compose up --build
+docker compose --profile oracle up --build
+~~~

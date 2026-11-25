@@ -1,0 +1,9 @@
+sql-smoke:
+  tags: [qvai-training-jdk17-python]
+  script:
+    - python -m unittest discover -s tests
+
+java-contract:
+  tags: [qvai-training-jdk17-python]
+  script:
+    - python tools/check_java.py
