@@ -11,7 +11,7 @@ python -m unittest discover -s tests
 
 A Java-próba helyettesített gatewayjel vizsgálja a kliens újrapróbálkozását. A `tests/test_baseline.py` a package megjelölt utasításait és a repó sémafájljait SQLite-on futtatja (`tools.probe.repository`). A kezdő állapotban csak az egyszeri feladás smoke tesztje van meg (zöld) — az idempotencia- és kulcsütközés-teszteket TDD-vel, piros futással kezdve adjuk hozzá a `tests/` mappához.
 
-Az Oracle-ellenőrzéshez használhatod az önálló Docker Compose környezetet (`gvenzl/oracle-free:23-slim`), vagy a `python tools/run_oracle.py` szkriptet (SQLcl / SQL*Plus kézi használatakor az `oracle/` munkakönyvtárban futtasd a `@setup.sql` és `@verify.sql` fájlokat). A javítás indexmigrációját a package frissítése előtt kell alkalmazni. A repó `.gitlab/merge_request_templates/Default.md` fájlja tartalmazza az ellenőrzött MR-sablont.
+Az Oracle-ellenőrzéshez használhatod az önálló Docker Compose környezetet (`gvenzl/oracle-free:23-slim`), vagy a `python tools/run_oracle.py` szkriptet (SQLcl / SQL*Plus kézi használatakor az `oracle/` munkakönyvtárban futtasd a `@setup.sql` és `@verify.sql` fájlokat). A repó `.gitlab/merge_request_templates/Default.md` fájlja tartalmazza az ellenőrzött MR-sablont.
 
 ~~~text
 docker compose up --build

@@ -41,7 +41,7 @@ Skills applied: write-spec (+ list ADRs/rules applied).
 - R1. <First call creates a shipment and returns its ID.>
 - R2. <Retry with the same request key and same payload returns the original ID; only 1 row stored.>
 - R3. <New request key creates a new shipment, even for the same destination.>
-- R4. <Exact PO decision for same request key + different destination (e.g. ORA-20031, original row unchanged).>
+- R4. <Exact PO decision for same request key + different destination.>
 
 ## Design
 - **Call path verified:** <Exact file paths and line numbers across the codebase.>
