@@ -11,10 +11,11 @@ Translate `intent.md` into a concrete, testable technical specification (`spec.m
 
 ### Step 1 · Read Required Files (Read-Only)
 Read these files in order before forming any conclusion:
-1. `intent.md` (and `docs/ticket.md` if referenced)
-2. `AGENTS.md` (if present) and all ADRs under `docs/adr/`
-3. `.gitlab-ci.yml` (to extract the exact authoritative verification commands)
-4. All relevant source files across layers: `java/`, `db/`, `oracle/`, `tools/`
+1. `intent.md`
+2. `AGENTS.md` (if present)
+3. **Strict `docs/` rule:** **NEVER read, glob, or search any file under `docs/` (including `docs/adr/`, `docs/architecture.md`, `docs/ticket.md`) unless `AGENTS.md` explicitly points to it.** If `AGENTS.md` is missing or does not reference a `docs/` path, ignore `docs/` completely.
+4. `.gitlab-ci.yml` (to extract the exact authoritative verification commands)
+5. Relevant source files across layers: `java/`, `db/`, `oracle/`, `tools/`
 
 ### Step 2 · Mandatory Stop-and-Ask Gate (Open Questions)
 Inspect `## Open questions` / `## Nyitott kérdések` in `intent.md`.
@@ -39,10 +40,10 @@ Skills applied: write-spec (+ list ADRs/rules applied).
 - R4. <Exact PO decision for same request key + different destination (e.g. ORA-20031, original row unchanged).>
 
 ## Design
-- **Call path verified:** <Exact file paths and line numbers across Java -> JDBC -> PL/SQL.>
-- **Database & PL/SQL change:** <Unique constraint/index on `request_key` + atomic `DUP_VAL_ON_INDEX` lookup in `Shipment_Api.Submit` — NOT a racy `SELECT`-before-`INSERT`, and NO `COMMIT` inside the package.>
-- **Unchanged boundaries:** <Public 3-parameter signature and Java client contract stay backwards-compatible.>
-- **Authoritative verification commands:** List the exact CLI commands from `.gitlab-ci.yml` / `AGENTS.md` (`python tools/probe.py`, `python tools/check_java.py`, `python -m unittest discover -s tests`, and optional `python tools/run_oracle.py`).
+- **Call path verified:** <Exact file paths and line numbers across the codebase.>
+- **Proposed change & layer choice:** <Concrete technical change grounded strictly in the files read above and any ADRs/rules referenced by `AGENTS.md`.>
+- **Unchanged boundaries:** <Public interfaces and contracts that must stay backwards-compatible.>
+- **Authoritative verification commands:** List the exact CLI commands from `.gitlab-ci.yml` / `AGENTS.md` (`python -m unittest discover -s tests`, `python tools/check_java.py`, and optional `python tools/run_oracle.py`).
 
 ## How each constraint in the intent is met
 | Constraint | Met by |
