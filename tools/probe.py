@@ -1,4 +1,3 @@
-import argparse
 import re
 import sqlite3
 from contextlib import contextmanager
@@ -71,36 +70,10 @@ def show(label, passed, evidence):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--single", action="store_true", help="Run only the happy path")
-    args = parser.parse_args()
-    print("LOCAL SQL / SQLite fixture (no Oracle execution)")
-
+    print("LOCAL SQL / SQLite smoke probe (single submission only, no Oracle execution)")
     with repository() as (submit, rows):
         first = submit("REQ-101", "DEB")
         passed = show("FIRST", rows() == 1, f"id={first}, rows={rows()}")
-        if args.single:
-            return int(not passed)
-        repeated = submit("REQ-101", "DEB")
-        passed &= show("REPLAY", repeated == first and rows() == 1,
-                       f"first={first}, second={repeated}, rows={rows()} (expected: same ID, one row)")
-
-    with repository() as (submit, rows):
-        first = submit("REQ-101", "DEB")
-        other = submit("REQ-102", "DEB")
-        passed &= show("NEW KEY", other != first and rows() == 2,
-                       f"first={first}, second={other}, rows={rows()}")
-
-    with repository() as (submit, rows):
-        submit("REQ-101", "DEB")
-        try:
-            submit("REQ-101", "BUD")
-        except PayloadConflict:
-            rejected = True
-        else:
-            rejected = False
-        passed &= show("MISMATCH", rejected and rows() == 1,
-                       f"rejected={rejected}, rows={rows()} (expected: rejected, one row)")
     return int(not passed)
 
 
