@@ -1,5 +1,8 @@
+name: shipment-dispatch
+
 services:
   lab:
+    image: shipment-dispatch-lab:local
     build: .
     working_dir: /workspace
     volumes:
